@@ -5,6 +5,7 @@ dotenv.config({path:path.resolve(__dirname, ".env") });
 import { adjectives, nouns } from "./words"
 import nodemailer from "nodemailer";
 import sgTransport from "nodemailer-sendgrid-transport"
+import jwt from "jsonwebtoken"
 
 
 export const generatorSecret = () => {
@@ -30,7 +31,10 @@ export const sendSecretMail = (adress, secret) => {
         from : "carrien1112@gmail.com",
         to: adress,
         subject : "Login Secret for babagram",
-        html : `Thank you! Your login secret it ${secret}. <br> Copy paste on the app/website to log in`
+        html : `Thank you! Your login secret it <b>${secret}</b> <br> Copy paste on the app/website to log in`
     };
     return sendMail(email);
 }
+
+//토큰 생성
+export const generatorToken = (id) => jwt.sign({ id }, process.env.JWT_SECRET);
